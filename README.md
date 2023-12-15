@@ -2,4 +2,5 @@
 A netdisk by C++
 Development software: QT
 Language: C++
-Platform: Windows
+Platform: Windows·
+Group members: ps,czq,cgs,qh
