@@ -1,9 +1,0 @@
-# ninja log v5
-2	471	7243209003914255	NeiDisk_autogen/timestamp	b20cf55fcc356c06
-2	471	7243209003914255	NeiDisk_autogen/mocs_compilation.cpp	b20cf55fcc356c06
-2	471	7243209003914255	D:/QT/Project/build-NeiDisk-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/NeiDisk_autogen/timestamp	b20cf55fcc356c06
-2	471	7243209003914255	D:/QT/Project/build-NeiDisk-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/NeiDisk_autogen/mocs_compilation.cpp	b20cf55fcc356c06
-472	2158	7243209021334961	CMakeFiles/NeiDisk.dir/NeiDisk_autogen/mocs_compilation.cpp.obj	d1a64b5b5d3b5747
-475	2164	7243209021374968	CMakeFiles/NeiDisk.dir/main.cpp.obj	e13386d15dec3d79
-474	2400	7243209023767930	CMakeFiles/NeiDisk.dir/mainwindow.cpp.obj	3b1488340d52f731
-2400	2605	7243209025747948	NeiDisk.exe	6ef1911222d43b7b
