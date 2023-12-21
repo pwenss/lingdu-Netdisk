@@ -1,23 +1,34 @@
-#include "tcpclient.h"
-#include "ui_tcpclient.h"
 #include <QByteArray>
 #include <QDebug>
 #include <QMessageBox>
 #include <QHostAddress>
 #include "protocol.h"
+#include "mainwidget.h"
+#include "tcpclient.h"
+#include "log.h"
 
-TcpClient::TcpClient(QWidget *parent) : QWidget(parent), ui(new Ui::TcpClient)
+TcpClient::TcpClient(QWidget *parent) : QWidget(parent)
 {
-    ui->setupUi(this);
     loadConfig();
+
     // when receive the response message, execute
     connect(&cliSocket, SIGNAL(readyRead()),this,SLOT(recvMsg()));  //QTconnect:  signal-->slot
-    cliSocket.connectToHost(QHostAddress(IP),port); // Connect to server
+    cliSocket.connectToHost(QHostAddress(IP),port); // subjectively Connect to server
 }
 
 TcpClient::~TcpClient()
 {
-    delete ui;
+}
+
+TcpClient& TcpClient::instance()
+{
+    static TcpClient tcpClient;
+    return tcpClient;
+}
+
+QTcpSocket& TcpClient::socket()
+{
+    return cliSocket;
 }
 
 void TcpClient::loadConfig()
@@ -61,118 +72,26 @@ void TcpClient::recvMsg()
     // User Task1: Register
     case REGISTER:
     {
-        if(0 == strcmp(pdu->meta,REGISTER_SUCCESS))
-            QMessageBox::information(this,"Redister",REGISTER_SUCCESS);
-        else if(0 == strcmp(pdu->meta,REGISTER_FAIL))
-            QMessageBox::warning(this,"Register",REGISTER_FAIL);
-
+        Log::instance().recvMsg(pdu);
         break;
     }
     // User Task2: Login
     case LOGIN:
     {
-        if(0 == strcmp(pdu->meta,LOGIN_SUCCESS))
-            QMessageBox::information(this,"Login",LOGIN_SUCCESS);
-        else if(0 == strcmp(pdu->meta,LOGIN_FAIL1))
-            QMessageBox::warning(this,"Login","Password error!\nPlease check again!");
-        else
-            QMessageBox::warning(this,"Login","User not exist!\nPlease check again!");
+        Log::instance().recvMsg(pdu);
         break;
     }
     // User Task3: Logout
     case LOGOUT:
     {
-        if(0 == strcmp(pdu->meta,LOGOUT_SUCCESS))
-            QMessageBox::information(this,"Login",LOGOUT_SUCCESS);
-        else if(0 == strcmp(pdu->meta,LOGOUT_FAIL1))
-            QMessageBox::warning(this,"Login","Password error!\nPlease check again!");
-        else
-            QMessageBox::warning(this,"Login","User not exist!\nPlease check again!");
+        Log::instance().recvMsg(pdu);
         break;
     }
+
     default:
     {
         break;
     }
     }
     free(pdu);
-    pdu = NULL;
 }
-
-
-// User Task 1: Register ---- MSGTYPE::Login
-void TcpClient::on_Register_Button_clicked()
-{
-    QString name = ui->UserName_lineEdit->text();
-    QString pwd = ui->Password_lineEdit->text();
-
-    // illeagl input
-    if(name.isEmpty())
-        QMessageBox::critical(this,"Register Error","UserName cannot be empty!");
-    else if(pwd.isEmpty())
-        QMessageBox::critical(this,"Register Error","Password cannot be empty!");\
-
-    // send register message to server
-    else
-    {
-        PDU *pdu = mkPDU(0);
-        pdu->type = REGISTER;
-        strncpy(pdu->meta,name.toStdString().c_str(),32);
-        strncpy(pdu->meta + 32,pwd.toStdString().c_str(),32);
-        cliSocket.write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
-    }
-
-}
-
-// User Task 2:  Login---- MSGTYPE::Login
-void TcpClient::on_Login_Button_clicked()
-{
-    QString name = ui->UserName_lineEdit->text();
-    QString pwd = ui->Password_lineEdit->text();
-
-    // illeagl input
-    if(name.isEmpty())
-        QMessageBox::critical(this,"Login Error","UserName cannot be empty!");
-    else if(pwd.isEmpty())
-        QMessageBox::critical(this,"Login Error","Password cannot be empty!");
-
-    // send register message to server
-    else
-    {
-        PDU *pdu = mkPDU(0);
-        pdu->type = LOGIN;
-        strncpy(pdu->meta,name.toStdString().c_str(),32);
-        strncpy(pdu->meta + 32,pwd.toStdString().c_str(),32);
-        cliSocket.write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
-    }
-}
-
-// User Task3: Log out
-void TcpClient::on_Logout_Button_clicked()
-{
-    QString name = ui->UserName_lineEdit->text();
-    QString pwd = ui->Password_lineEdit->text();
-
-    // illeagl input
-    if(name.isEmpty())
-        QMessageBox::critical(this,"Logout Error","UserName cannot be empty!");
-    else if(pwd.isEmpty())
-        QMessageBox::critical(this,"Logout Error","Password cannot be empty!");
-
-    // send register message to server
-    else
-    {
-        PDU *pdu = mkPDU(0);
-        pdu->type = LOGOUT;
-        strncpy(pdu->meta,name.toStdString().c_str(),32);
-        strncpy(pdu->meta + 32,pwd.toStdString().c_str(),32);
-        cliSocket.write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
-    }
-}
-

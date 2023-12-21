@@ -15,7 +15,6 @@ public:
     TcpServer(QWidget *parent = nullptr);
     ~TcpServer();
     void loadConfig(); // load configration from file
-    void incomingConnection(qintptr handle);
 
 private:
     Ui::TcpServer *ui;

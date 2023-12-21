@@ -10,8 +10,10 @@ class myTcpServer : public QTcpServer
     Q_OBJECT
 public:
     myTcpServer();
+
     // singleton pattern
     static myTcpServer &instance();
+
     // overwrite to show new connection
     void incomingConnection(qintptr handle);
 private:

@@ -33,7 +33,7 @@ public:
     {
         if (TcpClient->objectName().isEmpty())
             TcpClient->setObjectName("TcpClient");
-        TcpClient->resize(278, 184);
+        TcpClient->resize(281, 184);
         UserName_lineEdit = new QLineEdit(TcpClient);
         UserName_lineEdit->setObjectName("UserName_lineEdit");
         UserName_lineEdit->setGeometry(QRect(110, 40, 131, 31));
@@ -56,10 +56,17 @@ public:
         Login_Button->setGeometry(QRect(30, 140, 71, 31));
         Register_Button = new QPushButton(TcpClient);
         Register_Button->setObjectName("Register_Button");
-        Register_Button->setGeometry(QRect(150, 140, 71, 31));
+        Register_Button->setGeometry(QRect(210, 110, 71, 31));
+        Register_Button->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"	text-decoration: underline;\n"
+"	font: italic 10pt \"Monospac821 BT\";\n"
+"	color: rgb(85, 85, 255);\n"
+"    border: none;\n"
+"}"));
         Logout_Button = new QPushButton(TcpClient);
         Logout_Button->setObjectName("Logout_Button");
-        Logout_Button->setGeometry(QRect(190, 120, 80, 24));
+        Logout_Button->setGeometry(QRect(150, 140, 81, 31));
+        Logout_Button->setStyleSheet(QString::fromUtf8(""));
 
         retranslateUi(TcpClient);
 

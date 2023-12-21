@@ -1,11 +1,16 @@
-#include "tcpclient.h"
-
+#include "log.h"
+#include "friend.h"
 #include <QApplication>
+#include "mainwidget.h"
+#include "tcpClient.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    TcpClient w;
-    w.show();
+
+    TcpClient::instance();
+
+    Log::instance().show();
+
     return a.exec();
 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TcpClient</class>
- <widget class="QWidget" name="TcpClient">
+ <class>Log</class>
+ <widget class="QWidget" name="Log">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>278</width>
+    <width>281</width>
     <height>184</height>
    </rect>
   </property>
@@ -88,11 +88,19 @@
   <widget class="QPushButton" name="Register_Button">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>140</y>
+     <x>210</x>
+     <y>110</y>
      <width>71</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	text-decoration: underline;
+	font: italic 10pt &quot;Monospac821 BT&quot;;
+	color: rgb(85, 85, 255);
+    border: none;
+}</string>
    </property>
    <property name="text">
     <string>Register</string>
@@ -101,11 +109,14 @@
   <widget class="QPushButton" name="Logout_Button">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>120</y>
-     <width>80</width>
-     <height>24</height>
+     <x>150</x>
+     <y>140</y>
+     <width>81</width>
+     <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Log out</string>

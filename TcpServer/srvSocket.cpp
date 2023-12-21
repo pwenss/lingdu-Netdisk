@@ -13,10 +13,10 @@ void srvSocket::recvMsg()
 
     qDebug() << this->bytesAvailable();
     uint len = 0;
-    this->read((char*)&len,sizeof(uint));
+    read((char*)&len,sizeof(uint));
     uint msgLen = len - sizeof(PDU);
     PDU *pdu = mkPDU(msgLen);
-    this->read((char*)pdu+sizeof(uint),len-sizeof(uint));
+    read((char*)pdu+sizeof(uint),len-sizeof(uint));
     switch (pdu->type)
     {
     // User Task1: Resgister
