@@ -5,5 +5,5 @@ Language: C++
 Platform: Windows  
 Members: 庞帅，覃灏，陈高上，程志琦  
 branch  
-master: documentation  
-main: main code
+main: documentation  
+master: main code
