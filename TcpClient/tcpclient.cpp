@@ -87,13 +87,18 @@ void TcpClient::recvMsg()
         Log::instance().recvMsg(pdu);
         break;
     }
-
+    // Folder Task:
     case REFRESH_FOLDER:
     {
         File::instance().recvMsg(pdu);
         break;
     }
     case ADD_FOLDER:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
+    case DELETE_FOLDER:
     {
         File::instance().recvMsg(pdu);
         break;

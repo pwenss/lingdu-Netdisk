@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include "protocol.h"
+#include <QButtonGroup>
 
 namespace Ui {
 class File;
@@ -38,7 +39,7 @@ public:
 
 public:
     Ui::File *ui;
-    QList<FolderIcon*> icons; // list of icons
+    QButtonGroup* buttonGroup; // group of icons
     QGridLayout* iconLayout;  // Lay out icon
 
     QString curDirect; // Current directory
@@ -46,6 +47,10 @@ public:
 private slots:
     void showFolder(QStringList nameList);
     void on_AddFolder_Button_clicked();
+    void onFolderIconClicked(FolderIcon* icon);
+    void onFolderIconChecked();
+
+    void on_Delete_Button_clicked();
 
 public:
     void refresh();

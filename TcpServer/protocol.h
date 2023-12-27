@@ -18,6 +18,8 @@ typedef unsigned int uint;
 #define LOGOUT_FAIL2 "Logout fail2"
 #define ADD_FOLDER_SUCCESS "AddFolder success"
 #define ADD_FOLDER_FAIL "AddFolder fail"
+#define DELETE_FOLDER_SUCCESS "DeleteFolder success"
+#define DELETE_FOLDER_FAIL "DeleteFolder fail"
 
 // enumeration class specify the message's type
 enum MSGTYPE

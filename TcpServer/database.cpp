@@ -137,6 +137,7 @@ QString DataBase::AddFolder(const char *userName, const char *parent, const char
     QString sql = QString("INSERT INTO folder (user, parent, name) VALUES (\'%1\', \'%2\', \'%3\')").arg(userName).arg(parent).arg(folderName);
     QSqlQuery query;
     qDebug() << "SQL: "<<sql;
+
     if(query.exec(sql))
         return ADD_FOLDER_SUCCESS;
     else
@@ -144,3 +145,21 @@ QString DataBase::AddFolder(const char *userName, const char *parent, const char
 
 }
 
+// Folder task3: DELETE Folder
+// Delete the record
+QString DataBase::DeleteFolder(const char *userName, const char *parent, QStringList nameList)
+{
+
+    QString sql;
+    for (QString folderName : nameList)
+        sql += QString("DELETE FROM folder WHERE user = \'%1\' AND parent = \'%2\' AND name = \'%3\' ;").arg(userName).arg(parent).arg(folderName);
+
+    QSqlQuery query;
+    qDebug() << "SQL: "<<sql;
+
+    if(query.exec(sql))
+        return DELETE_FOLDER_SUCCESS;
+    else
+        return DELETE_FOLDER_FAIL;
+
+}

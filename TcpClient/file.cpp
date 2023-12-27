@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include "tcpclient.h"
 #include "protocol.h"
-
+#include <QDebug>
 
 File::File(QWidget *parent)
     : QWidget(parent)
@@ -15,10 +15,15 @@ File::File(QWidget *parent)
     ui->Download_Button->hide();
     ui->Share_Button->hide();
     ui->Delete_Button->hide();
-    iconLayout = new QGridLayout(ui->widget);
 
+    iconLayout = new QGridLayout(ui->widget);
     iconLayout->setRowStretch(5, 1);
     iconLayout->setColumnStretch(6, 1);
+
+    buttonGroup = new QButtonGroup(this);
+    buttonGroup->setExclusive(false);
+    connect(buttonGroup, QOverload<QAbstractButton*,bool>::of(&QButtonGroup::buttonToggled),
+            this, &File::onFolderIconChecked);  // button checked change: update shown buttons in file widget
 
     curDirect = "root";
 }
@@ -37,15 +42,17 @@ File& File::instance()
 FolderIcon::FolderIcon(QString Name)
 {
     QToolButton* Tb = new QToolButton();
-    Tb->setIcon(QIcon("D:\\QT\\Project\\TcpClient\\folder.jpg"));
-    Tb->setStyleSheet("border: none;");
-    Tb->setIconSize(QSize(50, 50));
-    Tb->setFixedSize(80, 80);
-    Tb->raise();
+    Tb->setIcon(QIcon("D:\\QT\\Project\\NetDisk\\TcpClient\\folder.jpg"));
 
+    Tb->setStyleSheet("border: none;");
+    Tb->setIconSize(QSize(80, 80));
+    Tb->setFixedSize(100, 100);
+    Tb->raise();
     Tb->setText(Name);
     Tb->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
+    Tb->setCheckable(true);
+    Tb->setStyleSheet("QToolButton { border: none; }"
+                      "QToolButton:checked { background-color: lightblue; }");
     button = Tb;
     name = Name;
 }
@@ -72,26 +79,34 @@ void File::refresh()
 
 void File::showFolder(QStringList nameList)
 {
-    int ColumnSize = 5;
+    int ColumnSize = 4;
 
     // Delete previous button
     for(int i=0; i<iconLayout->count(); ++i)
         iconLayout->removeItem(iconLayout->itemAt(i));
-    qDeleteAll(icons.begin(), icons.end());
-    icons.clear();
+    for (QAbstractButton *button : buttonGroup->buttons())
+    {
+        buttonGroup->removeButton(button);
+        delete button;
+    }
 
     for (int i = 0; i < nameList.size(); ++i)
     {
         QString name = nameList.at(i);
 
         FolderIcon* icon= new FolderIcon(name);
-        icons.append(icon);
+        buttonGroup->addButton(icon->button);
 
-        int row = (icons.count() - 1)/ColumnSize;
-        int column = (icons.count()- 1)%ColumnSize;
+        int row = i/ColumnSize;
+        int column = i%ColumnSize;
 
         qDebug() << row <<column << name;
         iconLayout->addWidget(icon->button, row, column);
+
+        connect(icon->button, &QToolButton::clicked, this, [=]() {
+            onFolderIconClicked(icon);
+        }); // Folder ICon click() --- onFolderIconClicked(icon)
+
     }
 
     ui->widget->update();
@@ -126,6 +141,18 @@ void File::recvMsg(PDU* pdu)
         qDebug() << "nameList:" <<nameList;
         showFolder(nameList);
     }
+    case DELETE_FOLDER:
+    {
+        if(0 == strcmp(pdu->meta,DELETE_FOLDER_SUCCESS))
+        {
+            QMessageBox::information(this,"Delete Folder",DELETE_FOLDER_SUCCESS);
+            refresh();
+        }
+        else if(0 == strcmp(pdu->meta,DELETE_FOLDER_FAIL))
+            QMessageBox::warning(this,"Delete Folder","Unexpected Error!");
+
+        break;
+    }
     default:
     {
         break;
@@ -152,7 +179,7 @@ void File::on_AddFolder_Button_clicked()
         {
             QString userName = TcpClient::instance().userName;
 
-            PDU *pdu = mkPDU(curDirect.size() + 1);
+            PDU *pdu = mkPDU(name.size() + 1);
             pdu->type = MSGTYPE::ADD_FOLDER;
             strncpy(pdu->meta,userName.toStdString().c_str(),userName.size());
             strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),curDirect.size());
@@ -170,6 +197,64 @@ void File::on_AddFolder_Button_clicked()
     }
 
 
+}
+
+void File::onFolderIconClicked(FolderIcon* icon)
+{
+    // icon->button->update();
+    // ui->widget->update();
+}
+
+// Update shown buttons
+void File::onFolderIconChecked()
+{
+    int checkedCount = buttonGroup->checkedButton() ? 1 : 0;
+    if (checkedCount)
+    {
+        ui->Upload_Button->hide();
+        ui->AddFolder_Button->hide();
+
+        ui->Download_Button->show();
+        ui->Share_Button->show();
+        ui->Delete_Button->show();
+    }
+    else
+    {
+        ui->Upload_Button->show();
+        ui->AddFolder_Button->show();
+
+        ui->Download_Button->hide();
+        ui->Share_Button->hide();
+        ui->Delete_Button->hide();
+    }
+}
+
+// Delete folder
+void File::on_Delete_Button_clicked()
+{
+    // Get all selected button
+    QList<QAbstractButton*> checkedButtons;
+    QStringList names;
+    for (QAbstractButton* button : buttonGroup->buttons())
+    {
+        if (button->isChecked())
+            checkedButtons.append(button);
+    }
+    // Delete
+    for (QAbstractButton* button : checkedButtons)
+        names.append(button->text());
+    QString combinedString = names.join("#");
+
+    PDU *pdu = mkPDU(combinedString.length() + 1);
+    pdu->type = MSGTYPE::DELETE_FOLDER;
+    strncpy(pdu->meta,TcpClient::instance().userName.toStdString().c_str(),TcpClient::instance().userName.size());
+    strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),curDirect.size());
+    memcpy(pdu->data,combinedString.toStdString().c_str(),combinedString.size());
+
+    TcpClient::instance().cliSocket.write((char*)pdu,pdu->len);
+
+    free(pdu);
+    pdu = NULL;
 
 }
 

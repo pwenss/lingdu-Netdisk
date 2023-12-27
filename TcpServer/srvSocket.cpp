@@ -131,6 +131,7 @@ void srvSocket::recvMsg()
         strncpy(parent,pdu->meta+32,32);
         char folderName[32] = {'\0'};
         strncpy(folderName,pdu->data,pdu->dataLen);
+        qDebug()<<"Folder name in server:" << folderName;
 
         // Process
         QString msg = DataBase::instance().AddFolder(userName,parent,folderName);
@@ -146,6 +147,31 @@ void srvSocket::recvMsg()
         break;
     }
 
+    case DELETE_FOLDER:
+    {
+
+        // Read data
+        char userName[32] = {'\0'};
+        char parent[32] = {'\0'};
+        strncpy(userName,pdu->meta,32);
+        strncpy(parent,pdu->meta+32,32);
+        const char* charData = pdu->data;
+        QString combinedString(charData);
+        QStringList nameList = combinedString.split('#');
+
+        // Process
+        QString msg = DataBase::instance().DeleteFolder(userName,parent,nameList);
+
+        // Send response message to target client
+        PDU *respdu = mkPDU(0);
+        respdu->type = DELETE_FOLDER;
+        strcpy(respdu->meta,msg.toStdString().c_str());
+        write((char*)respdu,respdu->len);
+
+        free(respdu);
+        respdu = NULL;
+        break;
+    }
 
     default:
     {

@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     TcpClient::instance();
 
     // Log::instance().show();
-    TcpClient::instance().userName = "122";
+    TcpClient::instance().userName = "pwenss";
     MainWidget::instance().show();
 
     return a.exec();
