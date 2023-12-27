@@ -88,6 +88,17 @@ void TcpClient::recvMsg()
         break;
     }
 
+    case REFRESH_FOLDER:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
+    case ADD_FOLDER:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
+
     default:
     {
         break;

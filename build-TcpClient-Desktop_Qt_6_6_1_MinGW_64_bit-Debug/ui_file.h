@@ -36,44 +36,97 @@ public:
     {
         if (File->objectName().isEmpty())
             File->setObjectName("File");
-        File->resize(520, 419);
+        File->resize(520, 390);
+        File->setStyleSheet(QString::fromUtf8(""));
         AddFolder_Button = new QPushButton(File);
         AddFolder_Button->setObjectName("AddFolder_Button");
         AddFolder_Button->setGeometry(QRect(360, 10, 111, 31));
+        QFont font;
+        font.setFamilies({QString::fromUtf8("Comic Sans MS")});
+        font.setPointSize(9);
+        font.setBold(false);
+        font.setItalic(false);
+        AddFolder_Button->setFont(font);
+        AddFolder_Button->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         Upload_Button = new QPushButton(File);
         Upload_Button->setObjectName("Upload_Button");
-        Upload_Button->setGeometry(QRect(160, 10, 121, 31));
+        Upload_Button->setGeometry(QRect(160, 10, 111, 31));
+        Upload_Button->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;\n"
+""));
         pushButton_5 = new QPushButton(File);
         pushButton_5->setObjectName("pushButton_5");
         pushButton_5->setGeometry(QRect(20, 100, 80, 24));
+        pushButton_5->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         pushButton_6 = new QPushButton(File);
         pushButton_6->setObjectName("pushButton_6");
         pushButton_6->setGeometry(QRect(20, 140, 80, 24));
+        pushButton_6->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         pushButton_7 = new QPushButton(File);
         pushButton_7->setObjectName("pushButton_7");
         pushButton_7->setGeometry(QRect(20, 180, 80, 24));
+        pushButton_7->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         pushButton_8 = new QPushButton(File);
         pushButton_8->setObjectName("pushButton_8");
         pushButton_8->setGeometry(QRect(20, 220, 80, 24));
+        pushButton_8->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         pushButton_9 = new QPushButton(File);
         pushButton_9->setObjectName("pushButton_9");
         pushButton_9->setGeometry(QRect(20, 260, 80, 24));
+        pushButton_9->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         pushButton_10 = new QPushButton(File);
         pushButton_10->setObjectName("pushButton_10");
         pushButton_10->setGeometry(QRect(20, 300, 80, 24));
+        pushButton_10->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         Download_Button = new QPushButton(File);
         Download_Button->setObjectName("Download_Button");
-        Download_Button->setGeometry(QRect(120, 10, 81, 31));
+        Download_Button->setGeometry(QRect(120, 10, 91, 31));
+        Download_Button->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         Share_Button = new QPushButton(File);
         Share_Button->setObjectName("Share_Button");
         Share_Button->setGeometry(QRect(270, 10, 81, 31));
+        Share_Button->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         Delete_Button = new QPushButton(File);
         Delete_Button->setObjectName("Delete_Button");
         Delete_Button->setGeometry(QRect(420, 10, 81, 31));
+        Delete_Button->setStyleSheet(QString::fromUtf8("font: 9pt \"Comic Sans MS\";\n"
+"color: rgb(0, 0, 0);\n"
+"border: 2px solid black; \n"
+"border-radius: 10px;"));
         widget = new QWidget(File);
         widget->setObjectName("widget");
         widget->setGeometry(QRect(120, 70, 371, 291));
-        widget->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        widget->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+""));
         Delete_Button->raise();
         Share_Button->raise();
         Download_Button->raise();

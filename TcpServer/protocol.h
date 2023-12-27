@@ -16,7 +16,8 @@ typedef unsigned int uint;
 #define LOGOUT_SUCCESS "Logout success"
 #define LOGOUT_FAIL1 "Logout fail1"
 #define LOGOUT_FAIL2 "Logout fail2"
-
+#define ADD_FOLDER_SUCCESS "AddFolder success"
+#define ADD_FOLDER_FAIL "AddFolder fail"
 
 // enumeration class specify the message's type
 enum MSGTYPE
@@ -25,9 +26,10 @@ enum MSGTYPE
     REGISTER,
     LOGIN,
     LOGOUT,
+    REFRESH_FOLDER,
+    ADD_FOLDER,
+    DELETE_FOLDER,
 };
-
-
 // our protocal data unit through QTcpSocket
 // To unify,for all transmission data, we use this data form
 struct PDU

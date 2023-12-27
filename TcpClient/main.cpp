@@ -10,7 +10,9 @@ int main(int argc, char *argv[])
 
     TcpClient::instance();
 
-    Log::instance().show();
+    // Log::instance().show();
+    TcpClient::instance().userName = "122";
+    MainWidget::instance().show();
 
     return a.exec();
 }

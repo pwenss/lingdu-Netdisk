@@ -16,6 +16,7 @@ class Friend : public QWidget
 public:
     explicit Friend(QWidget *parent = nullptr);
     ~Friend();
+    static Friend& instance();
 
 private slots:
     void on_online_Button_clicked();

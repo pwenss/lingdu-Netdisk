@@ -27,9 +27,7 @@ private slots:
 
 private:
     Ui::MainWidget *ui;
-    // sub Widget
-    File* fileW;
-    Friend* friendW;
+
 };
 
 #endif // MAINWIDGET_H

@@ -51,6 +51,7 @@ void Log::on_Register_Button_clicked()
 void Log::on_Login_Button_clicked()
 {
     QString name = ui->UserName_lineEdit->text();
+    TcpClient::instance().userName = name; // Update the user name
     QString pwd = ui->Password_lineEdit->text();
 
     // illeagl input

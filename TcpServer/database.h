@@ -25,6 +25,10 @@ public:
     QString Register(const char *name, const char *pwd);  // Register
     QString Login(const char *name, const char *pwd);  // Login
     QString Logout(const char *name, const char *pwd);  // Logout
+
+    QString AddFolder(const char *userName, const char *parent, const char *folderName);
+    QStringList RefreshFolder(const char *userName, const char *parent);
+
 };
 
 #endif

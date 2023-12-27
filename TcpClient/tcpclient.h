@@ -26,6 +26,8 @@ private slots:
 private:
     QString IP;   // IP string
     quint16 port; // Port usigned short
+public:
+    QString userName; // user name
 
     QTcpSocket cliSocket; // Tcp socket, used to connect to the server and transmit data
 };

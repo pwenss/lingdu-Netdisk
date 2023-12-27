@@ -7,10 +7,11 @@
 #include <QApplication>
 #include <QWidget>
 #include <QVBoxLayout>
-#include <QPushButton>
+#include <QToolButton>
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
+#include "protocol.h"
 
 namespace Ui {
 class File;
@@ -18,7 +19,7 @@ class File;
 class FolderIcon
 {
 public:
-    QPushButton* button;
+    QToolButton* button;
     QString name;
 
 public:
@@ -33,14 +34,22 @@ class File : public QWidget
 public:
     explicit File(QWidget *parent = nullptr);
     ~File();
+    static File& instance();
 
 public:
     Ui::File *ui;
     QList<FolderIcon*> icons; // list of icons
     QGridLayout* iconLayout;  // Lay out icon
 
+    QString curDirect; // Current directory
+
 private slots:
+    void showFolder(QStringList nameList);
     void on_AddFolder_Button_clicked();
+
+public:
+    void refresh();
+    void recvMsg(PDU* pdu);
 };
 
 #endif // FILE_H

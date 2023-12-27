@@ -17,6 +17,7 @@ void srvSocket::recvMsg()
     uint msgLen = len - sizeof(PDU);
     PDU *pdu = mkPDU(msgLen);
     read((char*)pdu+sizeof(uint),len-sizeof(uint));
+
     switch (pdu->type)
     {
     // User Task1: Resgister
@@ -36,6 +37,7 @@ void srvSocket::recvMsg()
         respdu->type = REGISTER;
         strcpy(respdu->meta,msg.toStdString().c_str());
         write((char*)respdu,respdu->len);
+
         free(respdu);
         respdu = NULL;
         break;
@@ -57,8 +59,8 @@ void srvSocket::recvMsg()
         PDU *respdu = mkPDU(0);
         respdu->type = LOGIN;
         strcpy(respdu->meta,msg.toStdString().c_str());
-
         write((char*)respdu,respdu->len);
+
         free(respdu);
         respdu = NULL;
         break;
@@ -79,12 +81,72 @@ void srvSocket::recvMsg()
         PDU *respdu = mkPDU(0);
         respdu->type = LOGOUT;
         strcpy(respdu->meta,msg.toStdString().c_str());
-
         write((char*)respdu,respdu->len);
+
         free(respdu);
         respdu = NULL;
         break;
     }
+
+    // Folder task:
+    case REFRESH_FOLDER:
+    {
+
+        // Read data
+        char userName[32] = {'\0'};
+        char parent[32] = {'\0'};
+        strncpy(userName,pdu->meta,32);
+        strncpy(parent,pdu->meta+32,32);
+
+        // Process
+        QStringList nameList = DataBase::instance().RefreshFolder(userName,parent);
+        qDebug() << "Folder List:" <<nameList;
+
+        // Send response message to target client
+        int totalSize = 0;
+        for (const QString &str : nameList) {
+            totalSize += str.size() + 1;
+        }
+        QString combinedString = nameList.join('#'); // We use # to split the different string
+        qDebug() << "combinedString:" <<combinedString;
+
+        PDU *respdu = mkPDU(totalSize);
+        respdu->type = REFRESH_FOLDER;
+        strcpy(respdu->data,combinedString.toStdString().c_str());
+        write((char*)respdu,respdu->len);
+
+        free(respdu);
+        respdu = NULL;
+        break;
+    }
+
+    // Folder task:
+    case ADD_FOLDER:
+    {
+
+        // Read data
+        char userName[32] = {'\0'};
+        char parent[32] = {'\0'};
+        strncpy(userName,pdu->meta,32);
+        strncpy(parent,pdu->meta+32,32);
+        char folderName[32] = {'\0'};
+        strncpy(folderName,pdu->data,pdu->dataLen);
+
+        // Process
+        QString msg = DataBase::instance().AddFolder(userName,parent,folderName);
+
+        // Send response message to target client
+        PDU *respdu = mkPDU(0);
+        respdu->type = ADD_FOLDER;
+        strcpy(respdu->meta,msg.toStdString().c_str());
+        write((char*)respdu,respdu->len);
+
+        free(respdu);
+        respdu = NULL;
+        break;
+    }
+
+
     default:
     {
         break;

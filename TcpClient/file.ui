@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>520</width>
-    <height>419</height>
+    <height>390</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QPushButton" name="AddFolder_Button">
    <property name="geometry">
@@ -22,6 +25,20 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>9</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
+   </property>
    <property name="text">
     <string>Add Folder</string>
    </property>
@@ -31,9 +48,16 @@
     <rect>
      <x>160</x>
      <y>10</y>
-     <width>121</width>
+     <width>111</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;
+</string>
    </property>
    <property name="text">
     <string>Upload</string>
@@ -48,6 +72,12 @@
      <height>24</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
+   </property>
    <property name="text">
     <string>Latest</string>
    </property>
@@ -60,6 +90,12 @@
      <width>80</width>
      <height>24</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
    </property>
    <property name="text">
     <string>Photo</string>
@@ -74,6 +110,12 @@
      <height>24</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
+   </property>
    <property name="text">
     <string>Viedo</string>
    </property>
@@ -86,6 +128,12 @@
      <width>80</width>
      <height>24</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
    </property>
    <property name="text">
     <string>Music</string>
@@ -100,6 +148,12 @@
      <height>24</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
+   </property>
    <property name="text">
     <string>document</string>
    </property>
@@ -113,6 +167,12 @@
      <height>24</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
+   </property>
    <property name="text">
     <string>else</string>
    </property>
@@ -122,9 +182,15 @@
     <rect>
      <x>120</x>
      <y>10</y>
-     <width>81</width>
+     <width>91</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
    </property>
    <property name="text">
     <string>Download</string>
@@ -139,6 +205,12 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
+   </property>
    <property name="text">
     <string>Share</string>
    </property>
@@ -151,6 +223,12 @@
      <width>81</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -166,7 +244,8 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
+    <string notr="true">background-color: rgb(255, 255, 255);
+</string>
    </property>
   </widget>
   <zorder>Delete_Button</zorder>

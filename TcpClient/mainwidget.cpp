@@ -6,11 +6,9 @@ MainWidget::MainWidget(QWidget *parent)
     , ui(new Ui::MainWidget)
 {
     ui->setupUi(this);
-    fileW = new File;
-    friendW = new Friend;
 
-    ui->stackedWidget->addWidget(fileW);
-    ui->stackedWidget->addWidget(friendW);
+    ui->stackedWidget->addWidget(&(File::instance()));
+    ui->stackedWidget->addWidget(&(Friend::instance()));
 
 }
 
@@ -27,11 +25,12 @@ MainWidget& MainWidget::instance()
 
 void MainWidget::on_Friend_Button_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(friendW);
+    ui->stackedWidget->setCurrentWidget(&(Friend::instance()));
 }
 
 void MainWidget::on_File_Button_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(fileW);
+    ui->stackedWidget->setCurrentWidget(&(File::instance()));
+    File::instance().refresh();//Show root directory
 }
 
