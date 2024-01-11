@@ -10,6 +10,7 @@
 #define UI_FILE_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
@@ -31,6 +32,9 @@ public:
     QPushButton *Share_Button;
     QPushButton *Delete_Button;
     QWidget *widget;
+    QPushButton *UP_BUTTON;
+    QPushButton *DOWN_BUTTON;
+    QPushButton *REFRESH_BUTTON;
 
     void setupUi(QWidget *File)
     {
@@ -124,9 +128,39 @@ public:
 "border-radius: 10px;"));
         widget = new QWidget(File);
         widget->setObjectName("widget");
-        widget->setGeometry(QRect(120, 70, 371, 291));
+        widget->setGeometry(QRect(120, 80, 371, 291));
         widget->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
 ""));
+        UP_BUTTON = new QPushButton(File);
+        UP_BUTTON->setObjectName("UP_BUTTON");
+        UP_BUTTON->setGeometry(QRect(120, 50, 31, 31));
+        UP_BUTTON->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    border: none;  \n"
+"}"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/img/Up.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        UP_BUTTON->setIcon(icon);
+        UP_BUTTON->setIconSize(QSize(25, 25));
+        DOWN_BUTTON = new QPushButton(File);
+        DOWN_BUTTON->setObjectName("DOWN_BUTTON");
+        DOWN_BUTTON->setGeometry(QRect(150, 50, 31, 31));
+        DOWN_BUTTON->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    border: none;  \n"
+"}"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/img/DOWN.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        DOWN_BUTTON->setIcon(icon1);
+        DOWN_BUTTON->setIconSize(QSize(25, 25));
+        REFRESH_BUTTON = new QPushButton(File);
+        REFRESH_BUTTON->setObjectName("REFRESH_BUTTON");
+        REFRESH_BUTTON->setGeometry(QRect(180, 50, 31, 31));
+        REFRESH_BUTTON->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    border: none;  \n"
+"}"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/img/Refresh.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        REFRESH_BUTTON->setIcon(icon2);
+        REFRESH_BUTTON->setIconSize(QSize(25, 25));
         Delete_Button->raise();
         Share_Button->raise();
         Download_Button->raise();
@@ -139,6 +173,9 @@ public:
         pushButton_9->raise();
         pushButton_10->raise();
         widget->raise();
+        UP_BUTTON->raise();
+        DOWN_BUTTON->raise();
+        REFRESH_BUTTON->raise();
 
         retranslateUi(File);
 
@@ -152,13 +189,16 @@ public:
         Upload_Button->setText(QCoreApplication::translate("File", "Upload", nullptr));
         pushButton_5->setText(QCoreApplication::translate("File", "Latest", nullptr));
         pushButton_6->setText(QCoreApplication::translate("File", "Photo", nullptr));
-        pushButton_7->setText(QCoreApplication::translate("File", "Viedo", nullptr));
+        pushButton_7->setText(QCoreApplication::translate("File", "Video", nullptr));
         pushButton_8->setText(QCoreApplication::translate("File", "Music", nullptr));
         pushButton_9->setText(QCoreApplication::translate("File", "document", nullptr));
         pushButton_10->setText(QCoreApplication::translate("File", "else", nullptr));
         Download_Button->setText(QCoreApplication::translate("File", "Download", nullptr));
         Share_Button->setText(QCoreApplication::translate("File", "Share", nullptr));
         Delete_Button->setText(QCoreApplication::translate("File", "Delete", nullptr));
+        UP_BUTTON->setText(QString());
+        DOWN_BUTTON->setText(QString());
+        REFRESH_BUTTON->setText(QString());
     } // retranslateUi
 
 };

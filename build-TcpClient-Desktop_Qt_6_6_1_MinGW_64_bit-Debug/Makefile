@@ -396,7 +396,8 @@ Makefile: ../TcpClient/TcpClient.pro ../../../6.6.1/mingw_64/mkspecs/win32-g++/q
 		../../../6.6.1/mingw_64/lib/Qt6Core.prl \
 		../../../6.6.1/mingw_64/lib/Qt6EntryPoint.prl \
 		../../../6.6.1/mingw_64/mkspecs/features/build_pass.prf \
-		../TcpClient/config.qrc
+		../TcpClient/config.qrc \
+		../TcpClient/img.qrc
 	$(QMAKE) -o Makefile ..\TcpClient\TcpClient.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 ../../../6.6.1/mingw_64/mkspecs/features/spec_pre.prf:
 ../../../6.6.1/mingw_64/mkspecs/features/device_config.prf:
@@ -725,6 +726,7 @@ Makefile: ../TcpClient/TcpClient.pro ../../../6.6.1/mingw_64/mkspecs/win32-g++/q
 ../../../6.6.1/mingw_64/lib/Qt6EntryPoint.prl:
 ../../../6.6.1/mingw_64/mkspecs/features/build_pass.prf:
 ../TcpClient/config.qrc:
+../TcpClient/img.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\TcpClient\TcpClient.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

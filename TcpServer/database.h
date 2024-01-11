@@ -27,9 +27,10 @@ public:
     QString Logout(const char *name, const char *pwd);  // Logout
 
     QString AddFolder(const char *userName, const char *parent, const char *folderName);
+    QString AddFile(const char *userName, const char *parent, const char *fileName);
     QString DeleteFolder(const char *userName, const char *parent, QStringList nameList);
     QStringList RefreshFolder(const char *userName, const char *parent);
-
+    QString UPFolder(const char *userName, const char *folderName);
 };
 
 #endif

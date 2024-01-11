@@ -4,6 +4,7 @@
 PDU *mkPDU(uint dataLen)
 {
     uint len = sizeof(PDU) + dataLen;
+    // Continuous memeory
     PDU *pdu = (PDU*)malloc(len);
     memset(pdu,0,len);
 

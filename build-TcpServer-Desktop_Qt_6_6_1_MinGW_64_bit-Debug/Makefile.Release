@@ -257,6 +257,7 @@ release/moc_database.cpp: ../TcpServer/database.h \
 		../../../6.6.1/mingw_64/include/QtCore/qvarlengtharray.h \
 		../../../6.6.1/mingw_64/include/QtCore/q23utility.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		release/moc_predefs.h \
 		../../../6.6.1/mingw_64/bin/moc.exe
 	D:\QT\6.6.1\mingw_64\bin\moc.exe $(DEFINES) --include D:/QT/Project/NetDisk/build-TcpServer-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/release/moc_predefs.h -ID:/QT/6.6.1/mingw_64/mkspecs/win32-g++ -ID:/QT/Project/NetDisk/TcpServer -ID:/QT/6.6.1/mingw_64/include -ID:/QT/6.6.1/mingw_64/include/QtWidgets -ID:/QT/6.6.1/mingw_64/include/QtGui -ID:/QT/6.6.1/mingw_64/include/QtNetwork -ID:/QT/6.6.1/mingw_64/include/QtSql -ID:/QT/6.6.1/mingw_64/include/QtCore -I. -ID:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -ID:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -ID:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -ID:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -ID:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -ID:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\TcpServer\database.h -o release\moc_database.cpp
@@ -384,6 +385,7 @@ release/moc_mytcpserver.cpp: ../TcpServer/mytcpserver.h \
 		../../../6.6.1/mingw_64/include/QtCore/qvariant.h \
 		../../../6.6.1/mingw_64/include/QtCore/q23utility.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../TcpServer/Database.h \
 		../../../6.6.1/mingw_64/include/QtCore/QObject \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlDataBase \
@@ -516,6 +518,7 @@ release/moc_srvSocket.cpp: ../TcpServer/srvSocket.h \
 		../../../6.6.1/mingw_64/include/QtCore/qvariant.h \
 		../../../6.6.1/mingw_64/include/QtCore/q23utility.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../TcpServer/Database.h \
 		../../../6.6.1/mingw_64/include/QtCore/QObject \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlDataBase \
@@ -838,6 +841,7 @@ release/database.o: ../TcpServer/database.cpp ../TcpServer/DataBase.h \
 		../../../6.6.1/mingw_64/include/QtCore/qvarlengtharray.h \
 		../../../6.6.1/mingw_64/include/QtCore/q23utility.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../../../6.6.1/mingw_64/include/QtWidgets/QMessageBox \
 		../../../6.6.1/mingw_64/include/QtWidgets/qmessagebox.h \
 		../../../6.6.1/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -1088,7 +1092,8 @@ release/main.o: ../TcpServer/main.cpp ../TcpServer/tcpserver.h \
 		../../../6.6.1/mingw_64/include/QtSql/qtsqlexports.h \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlQuery \
 		../../../6.6.1/mingw_64/include/QtSql/qsqlquery.h \
-		../TcpServer/protocol.h
+		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\TcpServer\main.cpp
 
 release/mytcpserver.o: ../TcpServer/mytcpserver.cpp ../TcpServer/mytcpserver.h \
@@ -1214,6 +1219,7 @@ release/mytcpserver.o: ../TcpServer/mytcpserver.cpp ../TcpServer/mytcpserver.h \
 		../../../6.6.1/mingw_64/include/QtCore/qvariant.h \
 		../../../6.6.1/mingw_64/include/QtCore/q23utility.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../TcpServer/Database.h \
 		../../../6.6.1/mingw_64/include/QtCore/QObject \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlDataBase \
@@ -1226,7 +1232,67 @@ release/mytcpserver.o: ../TcpServer/mytcpserver.cpp ../TcpServer/mytcpserver.h \
 		../../../6.6.1/mingw_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mytcpserver.o ..\TcpServer\mytcpserver.cpp
 
-release/protocol.o: ../TcpServer/protocol.cpp ../TcpServer/protocol.h
+release/protocol.o: ../TcpServer/protocol.cpp ../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
+		../../../6.6.1/mingw_64/include/QtCore/qbytearray.h \
+		../../../6.6.1/mingw_64/include/QtCore/qrefcount.h \
+		../../../6.6.1/mingw_64/include/QtCore/qatomic.h \
+		../../../6.6.1/mingw_64/include/QtCore/qbasicatomic.h \
+		../../../6.6.1/mingw_64/include/QtCore/qatomic_cxx11.h \
+		../../../6.6.1/mingw_64/include/QtCore/qgenericatomic.h \
+		../../../6.6.1/mingw_64/include/QtCore/qcompilerdetection.h \
+		../../../6.6.1/mingw_64/include/QtCore/qsystemdetection.h \
+		../../../6.6.1/mingw_64/include/QtCore/qprocessordetection.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtconfiginclude.h \
+		../../../6.6.1/mingw_64/include/QtCore/qconfig.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtcore-config.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtconfigmacros.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtypes.h \
+		../../../6.6.1/mingw_64/include/QtCore/qassert.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtcoreexports.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtdeprecationmarkers.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtversionchecks.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtnoop.h \
+		../../../6.6.1/mingw_64/include/QtCore/qnamespace.h \
+		../../../6.6.1/mingw_64/include/QtCore/qglobal.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtpreprocessorsupport.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtversion.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtclasshelpermacros.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtypeinfo.h \
+		../../../6.6.1/mingw_64/include/QtCore/qcontainerfwd.h \
+		../../../6.6.1/mingw_64/include/QtCore/qsysinfo.h \
+		../../../6.6.1/mingw_64/include/QtCore/qlogging.h \
+		../../../6.6.1/mingw_64/include/QtCore/qflags.h \
+		../../../6.6.1/mingw_64/include/QtCore/qcompare_impl.h \
+		../../../6.6.1/mingw_64/include/QtCore/qconstructormacros.h \
+		../../../6.6.1/mingw_64/include/QtCore/qdarwinhelpers.h \
+		../../../6.6.1/mingw_64/include/QtCore/qexceptionhandling.h \
+		../../../6.6.1/mingw_64/include/QtCore/qforeach.h \
+		../../../6.6.1/mingw_64/include/QtCore/qttypetraits.h \
+		../../../6.6.1/mingw_64/include/QtCore/qfunctionpointer.h \
+		../../../6.6.1/mingw_64/include/QtCore/qglobalstatic.h \
+		../../../6.6.1/mingw_64/include/QtCore/qmalloc.h \
+		../../../6.6.1/mingw_64/include/QtCore/qminmax.h \
+		../../../6.6.1/mingw_64/include/QtCore/qnumeric.h \
+		../../../6.6.1/mingw_64/include/QtCore/qoverload.h \
+		../../../6.6.1/mingw_64/include/QtCore/qswap.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtenvironmentvariables.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtresource.h \
+		../../../6.6.1/mingw_64/include/QtCore/qttranslation.h \
+		../../../6.6.1/mingw_64/include/QtCore/qversiontagging.h \
+		../../../6.6.1/mingw_64/include/QtCore/qtmetamacros.h \
+		../../../6.6.1/mingw_64/include/QtCore/qarraydata.h \
+		../../../6.6.1/mingw_64/include/QtCore/qpair.h \
+		../../../6.6.1/mingw_64/include/QtCore/qarraydatapointer.h \
+		../../../6.6.1/mingw_64/include/QtCore/qarraydataops.h \
+		../../../6.6.1/mingw_64/include/QtCore/qcontainertools_impl.h \
+		../../../6.6.1/mingw_64/include/QtCore/qxptype_traits.h \
+		../../../6.6.1/mingw_64/include/QtCore/q20functional.h \
+		../../../6.6.1/mingw_64/include/QtCore/q20memory.h \
+		../../../6.6.1/mingw_64/include/QtCore/qbytearrayalgorithms.h \
+		../../../6.6.1/mingw_64/include/QtCore/qbytearrayview.h \
+		../../../6.6.1/mingw_64/include/QtCore/qstringfwd.h \
+		../../../6.6.1/mingw_64/include/QtCore/q20type_traits.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\protocol.o ..\TcpServer\protocol.cpp
 
 release/srvSocket.o: ../TcpServer/srvSocket.cpp ../TcpServer/srvSocket.h \
@@ -1348,6 +1414,7 @@ release/srvSocket.o: ../TcpServer/srvSocket.cpp ../TcpServer/srvSocket.h \
 		../../../6.6.1/mingw_64/include/QtCore/qvariant.h \
 		../../../6.6.1/mingw_64/include/QtCore/q23utility.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../TcpServer/Database.h \
 		../../../6.6.1/mingw_64/include/QtCore/QObject \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlDataBase \
@@ -1357,7 +1424,11 @@ release/srvSocket.o: ../TcpServer/srvSocket.cpp ../TcpServer/srvSocket.h \
 		../../../6.6.1/mingw_64/include/QtSql/qtsqlexports.h \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlQuery \
 		../../../6.6.1/mingw_64/include/QtSql/qsqlquery.h \
-		../../../6.6.1/mingw_64/include/QtCore/QDebug
+		../../../6.6.1/mingw_64/include/QtCore/QDebug \
+		../../../6.6.1/mingw_64/include/QtCore/QFile \
+		../../../6.6.1/mingw_64/include/QtCore/qfile.h \
+		../../../6.6.1/mingw_64/include/QtCore/qfiledevice.h \
+		../../../6.6.1/mingw_64/include/QtCore/QDataStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\srvSocket.o ..\TcpServer\srvSocket.cpp
 
 release/tcpserver.o: ../TcpServer/tcpserver.cpp ../TcpServer/tcpserver.h \
@@ -1559,6 +1630,7 @@ release/tcpserver.o: ../TcpServer/tcpserver.cpp ../TcpServer/tcpserver.h \
 		../../../6.6.1/mingw_64/include/QtNetwork/QTcpSocket \
 		../../../6.6.1/mingw_64/include/QtNetwork/qtcpsocket.h \
 		../TcpServer/protocol.h \
+		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../TcpServer/Database.h \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlDataBase \
 		../../../6.6.1/mingw_64/include/QtSql/qsqldatabase.h \
@@ -1567,7 +1639,6 @@ release/tcpserver.o: ../TcpServer/tcpserver.cpp ../TcpServer/tcpserver.h \
 		../../../6.6.1/mingw_64/include/QtSql/qtsqlexports.h \
 		../../../6.6.1/mingw_64/include/QtSql/QSqlQuery \
 		../../../6.6.1/mingw_64/include/QtSql/qsqlquery.h \
-		../../../6.6.1/mingw_64/include/QtCore/QByteArray \
 		../../../6.6.1/mingw_64/include/QtCore/QDebug \
 		../../../6.6.1/mingw_64/include/QtWidgets/QMessageBox \
 		../../../6.6.1/mingw_64/include/QtWidgets/qmessagebox.h \

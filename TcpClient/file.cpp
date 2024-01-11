@@ -5,16 +5,23 @@
 #include "tcpclient.h"
 #include "protocol.h"
 #include <QDebug>
+#include <QMouseEvent>
+#include <QLabel>
+#include <QFileDialog>
+#include <QThread>
 
 File::File(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::File)
 {
+    timer = new QTimer;
+
     ui->setupUi(this);
 
     ui->Download_Button->hide();
     ui->Share_Button->hide();
     ui->Delete_Button->hide();
+    ui->UP_BUTTON->setEnabled(false);
 
     iconLayout = new QGridLayout(ui->widget);
     iconLayout->setRowStretch(5, 1);
@@ -24,8 +31,9 @@ File::File(QWidget *parent)
     buttonGroup->setExclusive(false);
     connect(buttonGroup, QOverload<QAbstractButton*,bool>::of(&QButtonGroup::buttonToggled),
             this, &File::onFolderIconChecked);  // button checked change: update shown buttons in file widget
-
+    connect(timer,SIGNAL(timeout()),this,SLOT(UploadData()));
     curDirect = "root";
+
 }
 
 File::~File()
@@ -62,148 +70,93 @@ FolderIcon::~FolderIcon()
     delete(button);
 }
 
+// UI updata
+
 // Show the folder widget of current parent directory
 void File::refresh()
 {
     PDU *pdu = mkPDU(0);
     pdu->type = MSGTYPE::REFRESH_FOLDER;
-    strncpy(pdu->meta, TcpClient::instance().userName.toStdString().c_str(), TcpClient::instance().userName.size());
-    strncpy(pdu->meta+32, curDirect.toStdString().c_str(), curDirect.size());
+    strncpy(pdu->meta, TcpClient::instance().userName.toStdString().c_str(), 32);
+    strncpy(pdu->meta+32, curDirect.toStdString().c_str(), 32);
 
-    TcpClient::instance().cliSocket.write((char*)pdu,pdu->len);
+    qDebug()<<"Client Emitted PDU -- Refresh: "<< "len"<<pdu->len<<"datalen"<<pdu->dataLen<<"meta"<<pdu->meta;
 
-    free(pdu);
-    pdu = NULL;
+    TcpClient::instance().socket().write((char*)pdu, pdu->len);
 
+    delete pdu;
 }
 
 void File::showFolder(QStringList nameList)
 {
     int ColumnSize = 4;
 
-    // Delete previous button
-    for(int i=0; i<iconLayout->count(); ++i)
-        iconLayout->removeItem(iconLayout->itemAt(i));
+    // Delete previous button or label
     for (QAbstractButton *button : buttonGroup->buttons())
-    {
         buttonGroup->removeButton(button);
-        delete button;
+    while (iconLayout->count() > 0) {
+        QLayoutItem *item = iconLayout->takeAt(0);
+
+        if (item->widget()) {
+            delete item->widget();
+        }
+
+        delete item;
     }
 
-    for (int i = 0; i < nameList.size(); ++i)
+    // Add current button
+    if(nameList.empty())
     {
-        QString name = nameList.at(i);
+        iconLayout->setRowStretch(0, 1);
+        iconLayout->setColumnStretch(0, 1);
 
-        FolderIcon* icon= new FolderIcon(name);
-        buttonGroup->addButton(icon->button);
+        QLabel* label = new QLabel(ui->widget);
+        QFont font("Arial", 20);
+        font.setItalic(true);
+        label->setFont(font);
+        label->setStyleSheet("color: red");
+        label->setAlignment(Qt::AlignCenter);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        label->setText("Empty Folder");
 
-        int row = i/ColumnSize;
-        int column = i%ColumnSize;
-
-        qDebug() << row <<column << name;
-        iconLayout->addWidget(icon->button, row, column);
-
-        connect(icon->button, &QToolButton::clicked, this, [=]() {
-            onFolderIconClicked(icon);
-        }); // Folder ICon click() --- onFolderIconClicked(icon)
-
+        iconLayout->addWidget(label);
+        ui->DOWN_BUTTON->setEnabled(false);
     }
 
+    else
+    {
+        iconLayout->setRowStretch(5, 1);
+        iconLayout->setColumnStretch(6, 1);
+
+        for (int i = 0; i < nameList.size(); ++i)
+        {
+            QString name = nameList.at(i);
+
+            FolderIcon* icon= new FolderIcon(name);
+            buttonGroup->addButton(icon->button);
+
+            int row = i/ColumnSize;
+            int column = i%ColumnSize;
+
+            iconLayout->addWidget(icon->button, row, column);
+
+            // connect(icon->button, &QToolButton::clicked, this, [=]() {
+            //     onFolderIconClicked(icon);
+            // }); // Folder ICon click() --- onFolderIconClicked(icon)
+            connect(icon->button, &QToolButton::clicked, this, [=]() {
+                if (clickTimer.isActive() && clickTimer.remainingTime() < QApplication::doubleClickInterval()) {
+                    clickTimer.stop();
+                    onFolderIconDoubleClicked(icon);
+                } else {
+
+                    clickTimer.start();
+                }
+            }); // Folder Icon DoubleClick -- on FolderIconDoubleClicked
+        }
+    }
     ui->widget->update();
 }
 
-// Response Message Execute Function
-void File::recvMsg(PDU* pdu)
-{
-
-    // Distinguished the message type and Execute
-    switch (pdu->type)
-    {
-    // Folder Task1: Add folder
-    case ADD_FOLDER:
-    {
-        if(0 == strcmp(pdu->meta,ADD_FOLDER_SUCCESS))
-        {
-            QMessageBox::information(this,"Add Folder",ADD_FOLDER_SUCCESS);
-            refresh();
-        }
-        else if(0 == strcmp(pdu->meta,ADD_FOLDER_FAIL))
-            QMessageBox::warning(this,"Add Folder","Folder has already existed!");
-
-        break;
-    }
-    case REFRESH_FOLDER:
-    {
-        const char* charData = pdu->data;
-        QString combinedString(charData);
-        QStringList nameList = combinedString.split('#');
-
-        qDebug() << "nameList:" <<nameList;
-        showFolder(nameList);
-    }
-    case DELETE_FOLDER:
-    {
-        if(0 == strcmp(pdu->meta,DELETE_FOLDER_SUCCESS))
-        {
-            QMessageBox::information(this,"Delete Folder",DELETE_FOLDER_SUCCESS);
-            refresh();
-        }
-        else if(0 == strcmp(pdu->meta,DELETE_FOLDER_FAIL))
-            QMessageBox::warning(this,"Delete Folder","Unexpected Error!");
-
-        break;
-    }
-    default:
-    {
-        break;
-    }
-    }
-
-}
-
-
-
-
-
-void File::on_AddFolder_Button_clicked()
-{
-    QString name = QInputDialog::getText(this,"Add folder","Folder name");
-
-    if(!name.isEmpty())
-    {
-        if(name.size() > 32)
-        {
-            QMessageBox::warning(this,"Error","Folder name cannot exceed 32 characters!");
-        }
-        else
-        {
-            QString userName = TcpClient::instance().userName;
-
-            PDU *pdu = mkPDU(name.size() + 1);
-            pdu->type = MSGTYPE::ADD_FOLDER;
-            strncpy(pdu->meta,userName.toStdString().c_str(),userName.size());
-            strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),curDirect.size());
-            memcpy(pdu->data,name.toStdString().c_str(),name.size());
-
-            TcpClient::instance().cliSocket.write((char*)pdu,pdu->len);
-
-            free(pdu);
-            pdu = NULL;
-        }
-    }
-    else
-    {
-        QMessageBox::warning(this,"Error","Foler name cannot be null!");
-    }
-
-
-}
-
-void File::onFolderIconClicked(FolderIcon* icon)
-{
-    // icon->button->update();
-    // ui->widget->update();
-}
 
 // Update shown buttons
 void File::onFolderIconChecked()
@@ -229,6 +182,140 @@ void File::onFolderIconChecked()
     }
 }
 
+// CD the target directory
+void File::onFolderIconDoubleClicked(FolderIcon* icon)
+{
+    qDebug()<<"Double Clicked";
+    ui->UP_BUTTON->setEnabled(true);
+    curDirect = icon->name;
+    refresh();
+}
+
+
+
+// Response Message Execute Function
+void File::recvMsg(PDU* pdu)
+{
+    // Distinguished the message type and Execute
+    switch (pdu->type)
+    {
+    // Folder Task1: Add folder
+    case ADD_FOLDER:
+    {
+        if(0 == strcmp(pdu->meta,ADD_FOLDER_SUCCESS))
+        {
+            QMessageBox::information(this,"Add Folder",ADD_FOLDER_SUCCESS);
+            refresh();
+        }
+        else if(0 == strcmp(pdu->meta,ADD_FOLDER_FAIL))
+            QMessageBox::warning(this,"Add Folder","Folder has already existed!");
+
+        break;
+    }
+    case REFRESH_FOLDER:
+    {
+        QStringList nameList;
+        if(pdu->dataLen == 1)   // dataLen = combinedString.size() + 1
+        {
+            nameList= QStringList();
+        }
+        else
+        {
+            // char[] to QstringList
+            const char* charData = pdu->data;
+            QString combinedString = QString::fromUtf8(charData);
+            nameList = combinedString.split('#');
+        }
+        qDebug() << "NameList:" <<nameList;
+        showFolder(nameList);
+
+        break;
+    }
+    case DELETE_FOLDER:
+    {
+        if(0 == strcmp(pdu->meta,DELETE_FOLDER_SUCCESS))
+        {
+            QMessageBox::information(this,"Delete Folder",DELETE_FOLDER_SUCCESS);
+            refresh();
+        }
+        else if(0 == strcmp(pdu->meta,DELETE_FOLDER_FAIL))
+            QMessageBox::warning(this,"Delete Folder","Unexpected Error!");
+
+        break;
+    }
+    case UP_FOLDER:
+    {
+        curDirect = QString::fromUtf8(pdu->meta);
+        qDebug()<<"UP directory: "<<curDirect;
+
+        if(curDirect == "root")
+             ui->UP_BUTTON->setEnabled(false);
+        ui->DOWN_BUTTON->setEnabled(true);
+
+        refresh();
+        break;
+    }
+    case UPLOAD:
+    {
+        if(0 == strcmp(pdu->meta,ADD_FILE_SUCCESS))
+        {
+            QMessageBox::information(this,"Upload", "Upload File Success!");
+            refresh();
+        }
+        else if(0 == strcmp(pdu->meta,ADD_FILE_FAIL1))
+        {
+            QMessageBox::warning(this,"Upload", "File has already existed!");
+        }
+        else if(0 == strcmp(pdu->meta,ADD_FILE_FAIL2))
+        {
+            QMessageBox::warning(this,"Upload", "Read file error!");
+        }
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
+
+}
+
+
+
+// Folder Task
+void File::on_AddFolder_Button_clicked()
+{
+    QString name = QInputDialog::getText(this,"Add folder","Folder name");
+
+    if(!name.isEmpty())
+    {
+        if(name.size() > 32)
+        {
+            QMessageBox::warning(this,"Error","Folder name cannot exceed 32 characters!");
+        }
+        else
+        {
+            QString userName = TcpClient::instance().userName;
+
+            PDU *pdu = mkPDU(name.size()+1);
+            pdu->type = MSGTYPE::ADD_FOLDER;
+            strncpy(pdu->meta,userName.toStdString().c_str(),32);
+            strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),32);
+            memcpy(pdu->data,name.toStdString().c_str(),name.size());
+
+            TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
+
+            delete pdu;
+        }
+    }
+    else
+    {
+        QMessageBox::warning(this,"Error","Foler name cannot be null!");
+    }
+
+
+}
+
 // Delete folder
 void File::on_Delete_Button_clicked()
 {
@@ -245,16 +332,121 @@ void File::on_Delete_Button_clicked()
         names.append(button->text());
     QString combinedString = names.join("#");
 
-    PDU *pdu = mkPDU(combinedString.length() + 1);
+    PDU *pdu = mkPDU(combinedString.size()+1);
     pdu->type = MSGTYPE::DELETE_FOLDER;
-    strncpy(pdu->meta,TcpClient::instance().userName.toStdString().c_str(),TcpClient::instance().userName.size());
-    strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),curDirect.size());
+    strncpy(pdu->meta,TcpClient::instance().userName.toStdString().c_str(),32);
+    strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),32);
     memcpy(pdu->data,combinedString.toStdString().c_str(),combinedString.size());
 
-    TcpClient::instance().cliSocket.write((char*)pdu,pdu->len);
+    TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
 
-    free(pdu);
-    pdu = NULL;
-
+    delete pdu;
 }
 
+
+
+void File::on_UP_BUTTON_clicked()
+{
+    qDebug()<<"UP folder";
+    PDU *pdu = mkPDU(0);
+    pdu->type = MSGTYPE::UP_FOLDER;
+    strncpy(pdu->meta,TcpClient::instance().userName.toStdString().c_str(),32);
+    strncpy(pdu->meta + 32,curDirect.toStdString().c_str(),32);
+
+    TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
+
+    delete pdu;
+}
+
+
+void File::on_DOWN_BUTTON_clicked()
+{
+    QLayoutItem *item = iconLayout->itemAtPosition(0, 0);
+    QToolButton *tb = qobject_cast<QToolButton *>(item->widget());
+    curDirect = tb->text();
+    ui->UP_BUTTON->setEnabled(true);
+    refresh();
+}
+
+
+void File::on_REFRESH_BUTTON_clicked()
+{
+    refresh();
+}
+
+
+void File::on_Upload_Button_clicked()
+{
+    filePath = QFileDialog::getOpenFileName();
+    if(!filePath.isEmpty())
+    {
+        int index = filePath.lastIndexOf('/');
+        QString fileName = filePath.mid(index + 1);
+
+        QFile file(filePath);
+        qint64 fileSize = file.size();
+
+        PDU *pdu = mkPDU(21); // long long int
+        // Write meta data, username, parent directory, file name
+        pdu->type = UPLOAD;
+        strncpy(pdu->meta,TcpClient::instance().userName.toStdString().c_str(), 32);
+        strncpy(pdu->meta+32, curDirect.toStdString().c_str(), 32);
+        strncpy(pdu->meta+64, fileName.toStdString().c_str(), 32);
+        sprintf(pdu->data,"%lld",fileSize);
+        if (!file.open(QIODevice::ReadOnly| QIODevice::Unbuffered))
+        {
+            QMessageBox::warning(this, "UPLOAD", "Cannot open the file!");
+            return;
+        }
+        file.close();
+
+        TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
+
+        qDebug()<<"File Size: "<<fileSize;
+
+        delete pdu;
+        timer->start(1000);
+
+    }
+    else
+    {
+        QMessageBox::warning(this,"UPLOAD","File connot be null!");
+    }
+}
+
+void File::UploadData()
+{
+    timer->stop();
+    qDebug()<<"here";
+
+    char *buffer = new char[4096];
+    int readSize=0;
+    QFile file(filePath);
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        QMessageBox::warning(this,"UpLoad","Cannot open the file!");
+        return;
+    }
+
+    while(true)
+    {
+        readSize = file.read(buffer,4096);
+        qDebug()<<"Send FileData: "<<readSize;
+
+        if(readSize>0&&readSize<=4096)
+            TcpClient::instance().cliSocket.write(buffer, readSize);
+
+        else if(readSize==0)
+            break;
+
+        else
+        {
+            QMessageBox::warning(this,"UPLOAD","Read file error!");
+            break;
+        }
+
+    }
+
+    delete[] buffer;
+
+}

@@ -40,9 +40,10 @@ void Log::on_Register_Button_clicked()
         pdu->type = REGISTER;
         strncpy(pdu->meta,name.toStdString().c_str(),32);
         strncpy(pdu->meta + 32,pwd.toStdString().c_str(),32);
-        TcpClient::instance().socket().write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
+
+        TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
+
+        delete pdu;
     }
 
 }
@@ -67,9 +68,10 @@ void Log::on_Login_Button_clicked()
         pdu->type = LOGIN;
         strncpy(pdu->meta,name.toStdString().c_str(),32);
         strncpy(pdu->meta + 32,pwd.toStdString().c_str(),32);
-        TcpClient::instance().socket().write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
+
+        TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
+
+        delete pdu;
     }
 }
 
@@ -92,9 +94,10 @@ void Log::on_Logout_Button_clicked()
         pdu->type = LOGOUT;
         strncpy(pdu->meta,name.toStdString().c_str(),32);
         strncpy(pdu->meta + 32,pwd.toStdString().c_str(),32);
-        TcpClient::instance().socket().write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
+
+        TcpClient::instance().cliSocket.write((char*)pdu, pdu->len);
+
+        delete pdu;
     }
 }
 

@@ -59,12 +59,13 @@ void TcpClient::loadConfig()
 void TcpClient::recvMsg()
 {
     // Read the PDU
-    qDebug() << cliSocket.bytesAvailable();
     uint len = 0;
     cliSocket.read((char*)&len,sizeof(uint));
     uint msgLen = len - sizeof(PDU);
     PDU *pdu = mkPDU(msgLen);
     cliSocket.read((char*)pdu+sizeof(uint),len-sizeof(uint));
+
+    qDebug()<<"Client Received PDU:  "<<"len: "<<pdu->len<<"type: "<<pdu->type<<"dataLen: "<<pdu->dataLen<<"meta: "<<pdu->meta;
 
     // Distinguished the message type and Execute
     switch (pdu->type)
@@ -103,11 +104,22 @@ void TcpClient::recvMsg()
         File::instance().recvMsg(pdu);
         break;
     }
+    case UP_FOLDER:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
+    case UPLOAD:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
+
 
     default:
     {
         break;
     }
     }
-    free(pdu);
+
 }

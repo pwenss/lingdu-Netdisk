@@ -117,7 +117,7 @@ border: 2px solid black;
 border-radius: 10px;</string>
    </property>
    <property name="text">
-    <string>Viedo</string>
+    <string>Video</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_8">
@@ -238,7 +238,7 @@ border-radius: 10px;</string>
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>70</y>
+     <y>80</y>
      <width>371</width>
      <height>291</height>
     </rect>
@@ -246,6 +246,90 @@ border-radius: 10px;</string>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 255, 255);
 </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="UP_BUTTON">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>50</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: none;  
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/img/Up.jpg</normaloff>:/img/Up.jpg</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>25</width>
+     <height>25</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="DOWN_BUTTON">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>50</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: none;  
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/img/DOWN.jpg</normaloff>:/img/DOWN.jpg</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>25</width>
+     <height>25</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="REFRESH_BUTTON">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>50</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: none;  
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/img/Refresh.jpg</normaloff>:/img/Refresh.jpg</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>25</width>
+     <height>25</height>
+    </size>
    </property>
   </widget>
   <zorder>Delete_Button</zorder>
@@ -260,7 +344,12 @@ border-radius: 10px;</string>
   <zorder>pushButton_9</zorder>
   <zorder>pushButton_10</zorder>
   <zorder>widget</zorder>
+  <zorder>UP_BUTTON</zorder>
+  <zorder>DOWN_BUTTON</zorder>
+  <zorder>REFRESH_BUTTON</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="img.qrc"/>
+ </resources>
  <connections/>
 </ui>

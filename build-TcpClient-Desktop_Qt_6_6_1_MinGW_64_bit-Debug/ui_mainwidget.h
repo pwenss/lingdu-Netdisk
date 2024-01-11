@@ -30,10 +30,10 @@ public:
     {
         if (MainWidget->objectName().isEmpty())
             MainWidget->setObjectName("MainWidget");
-        MainWidget->resize(773, 516);
+        MainWidget->resize(765, 599);
         stackedWidget = new QStackedWidget(MainWidget);
         stackedWidget->setObjectName("stackedWidget");
-        stackedWidget->setGeometry(QRect(160, 20, 601, 471));
+        stackedWidget->setGeometry(QRect(100, 20, 641, 561));
         stackedWidget->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         page = new QWidget();
         page->setObjectName("page");
@@ -43,10 +43,10 @@ public:
         stackedWidget->addWidget(page_2);
         Friend_Button = new QPushButton(MainWidget);
         Friend_Button->setObjectName("Friend_Button");
-        Friend_Button->setGeometry(QRect(20, 30, 101, 31));
+        Friend_Button->setGeometry(QRect(20, 140, 61, 31));
         File_Button = new QPushButton(MainWidget);
         File_Button->setObjectName("File_Button");
-        File_Button->setGeometry(QRect(20, 100, 101, 31));
+        File_Button->setGeometry(QRect(10, 330, 61, 31));
 
         retranslateUi(MainWidget);
 

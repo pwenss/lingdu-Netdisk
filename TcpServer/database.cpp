@@ -120,7 +120,7 @@ QStringList DataBase::RefreshFolder(const char *userName, const char *parent)
 
     QSqlQuery query;
     query.exec(sql);
-
+    qDebug() << "SQL--Refresh: "<<sql;
     while (query.next())
     {
         QString folderName = query.value("name").toString();
@@ -130,7 +130,7 @@ QStringList DataBase::RefreshFolder(const char *userName, const char *parent)
     return strList;
 }
 
-// Folder task2: ADD Folder
+// Folder task2: ADD Folder / File
 // Insert the record
 QString DataBase::AddFolder(const char *userName, const char *parent, const char *folderName)
 {
@@ -144,6 +144,21 @@ QString DataBase::AddFolder(const char *userName, const char *parent, const char
         return ADD_FOLDER_FAIL;
 
 }
+
+QString DataBase::AddFile(const char *userName, const char *parent, const char *fileName)
+{
+    char* format = std::strrchr(fileName, '.') + 1;
+    QString sql = QString("INSERT INTO file (user, parent, name, format) VALUES (\'%1\', \'%2\', \'%3\', \'%4\')").arg(userName).arg(parent).arg(fileName).arg(format);
+    QSqlQuery query;
+    qDebug() << "SQL: "<<sql;
+
+    if(query.exec(sql))
+        return ADD_FILE_SUCCESS;
+    else
+        return ADD_FILE_FAIL1;
+
+}
+
 
 // Folder task3: DELETE Folder
 // Delete the record
@@ -162,4 +177,18 @@ QString DataBase::DeleteFolder(const char *userName, const char *parent, QString
     else
         return DELETE_FOLDER_FAIL;
 
+}
+
+// Folder task4: UP Folder
+// SELECT the record
+QString DataBase::UPFolder(const char *userName, const char *folderName)
+{
+
+    QString sql = QString("SELECT parent FROM folder WHERE user = \'%1\' AND  name = \'%2\'").arg(userName).arg(folderName);
+    qDebug() << "SQL: "<<sql;
+    QSqlQuery query;
+    query.exec(sql);
+    query.next();
+
+    return query.value("parent").toString();
 }
