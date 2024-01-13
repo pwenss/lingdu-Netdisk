@@ -32,7 +32,7 @@ File::File(QWidget *parent)
     connect(buttonGroup, QOverload<QAbstractButton*,bool>::of(&QButtonGroup::buttonToggled),
             this, &File::onFolderIconChecked);  // button checked change: update shown buttons in file widget
     connect(timer,SIGNAL(timeout()),this,SLOT(UploadData()));
-    curDirect = "root";
+    curDirect = "5";
 
 }
 
@@ -47,7 +47,7 @@ File& File::instance()
     return file;
 }
 
-FolderIcon::FolderIcon(QString Name)
+FolderIcon::FolderIcon(QString Name, QString id)
 {
     QToolButton* Tb = new QToolButton();
     Tb->setIcon(QIcon("D:\\QT\\Project\\NetDisk\\TcpClient\\folder.jpg"));
@@ -63,6 +63,7 @@ FolderIcon::FolderIcon(QString Name)
                       "QToolButton:checked { background-color: lightblue; }");
     button = Tb;
     name = Name;
+    ID = id;
 }
 
 FolderIcon::~FolderIcon()
@@ -92,6 +93,7 @@ void File::showFolder(QStringList nameList)
     int ColumnSize = 4;
 
     // Delete previous button or label
+    icons.clear();
     for (QAbstractButton *button : buttonGroup->buttons())
         buttonGroup->removeButton(button);
     while (iconLayout->count() > 0) {
@@ -130,10 +132,15 @@ void File::showFolder(QStringList nameList)
 
         for (int i = 0; i < nameList.size(); ++i)
         {
-            QString name = nameList.at(i);
+            // nameList: [name + "//" + ID,...]
+            QString nameUnit = nameList.at(i);
+            QStringList nameUnitList = nameUnit.split("//");
+            QString name = nameUnitList.at(0);
+            QString ID = nameUnitList.at(1);
 
-            FolderIcon* icon= new FolderIcon(name);
+            FolderIcon* icon= new FolderIcon(name, ID);
             buttonGroup->addButton(icon->button);
+            icons.append(icon);
 
             int row = i/ColumnSize;
             int column = i%ColumnSize;
@@ -187,7 +194,7 @@ void File::onFolderIconDoubleClicked(FolderIcon* icon)
 {
     qDebug()<<"Double Clicked";
     ui->UP_BUTTON->setEnabled(true);
-    curDirect = icon->name;
+    curDirect = icon->ID;
     refresh();
 }
 
@@ -214,7 +221,7 @@ void File::recvMsg(PDU* pdu)
     }
     case REFRESH_FOLDER:
     {
-        QStringList nameList;
+        QStringList nameList; // list: name'//'nameID
         if(pdu->dataLen == 1)   // dataLen = combinedString.size() + 1
         {
             nameList= QStringList();
@@ -283,6 +290,7 @@ void File::recvMsg(PDU* pdu)
 
 
 // Folder Task
+// Add folder
 void File::on_AddFolder_Button_clicked()
 {
     QString name = QInputDialog::getText(this,"Add folder","Folder name");
@@ -291,12 +299,17 @@ void File::on_AddFolder_Button_clicked()
     {
         if(name.size() > 32)
         {
-            QMessageBox::warning(this,"Error","Folder name cannot exceed 32 characters!");
+            QMessageBox::warning(this,"Add Folder","Folder name cannot exceed 32 characters!");
+        }
+        else if(name.contains('#'))
+        {
+            QMessageBox::warning(this,"Add Folder","Folder name cannot contain '#'!");
         }
         else
         {
             QString userName = TcpClient::instance().userName;
 
+            // Meta: username+current Direct   Data: name
             PDU *pdu = mkPDU(name.size()+1);
             pdu->type = MSGTYPE::ADD_FOLDER;
             strncpy(pdu->meta,userName.toStdString().c_str(),32);
@@ -310,7 +323,7 @@ void File::on_AddFolder_Button_clicked()
     }
     else
     {
-        QMessageBox::warning(this,"Error","Foler name cannot be null!");
+        QMessageBox::warning(this,"Add Folder","Foler name cannot be null!");
     }
 
 
@@ -319,18 +332,21 @@ void File::on_AddFolder_Button_clicked()
 // Delete folder
 void File::on_Delete_Button_clicked()
 {
+    qDebug()<<"here";
     // Get all selected button
-    QList<QAbstractButton*> checkedButtons;
-    QStringList names;
-    for (QAbstractButton* button : buttonGroup->buttons())
+    QList<FolderIcon*> checkedIcons;
+    QStringList IDs;
+    for (FolderIcon* icon : icons)
     {
-        if (button->isChecked())
-            checkedButtons.append(button);
+        if (icon->button->isChecked())
+            checkedIcons.append(icon);
     }
+    qDebug()<<"here";
+
     // Delete
-    for (QAbstractButton* button : checkedButtons)
-        names.append(button->text());
-    QString combinedString = names.join("#");
+    for (FolderIcon* icon: checkedIcons)
+        IDs.append(icon->ID);
+    QString combinedString = IDs.join("#");
 
     PDU *pdu = mkPDU(combinedString.size()+1);
     pdu->type = MSGTYPE::DELETE_FOLDER;
@@ -361,9 +377,8 @@ void File::on_UP_BUTTON_clicked()
 
 void File::on_DOWN_BUTTON_clicked()
 {
-    QLayoutItem *item = iconLayout->itemAtPosition(0, 0);
-    QToolButton *tb = qobject_cast<QToolButton *>(item->widget());
-    curDirect = tb->text();
+    FolderIcon* icon = icons.at(0);
+    curDirect = icon->ID;
     ui->UP_BUTTON->setEnabled(true);
     refresh();
 }
@@ -405,7 +420,7 @@ void File::on_Upload_Button_clicked()
         qDebug()<<"File Size: "<<fileSize;
 
         delete pdu;
-        timer->start(1000);
+        timer->start(1000); // Connect to UploadData()
 
     }
     else

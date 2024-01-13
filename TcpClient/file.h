@@ -22,9 +22,9 @@ class FolderIcon
 public:
     QToolButton* button;
     QString name;
-
+    QString ID;
 public:
-    FolderIcon(QString Name);
+    FolderIcon(QString Name, QString ID);
     ~FolderIcon();
 };
 
@@ -41,6 +41,7 @@ public:
     Ui::File *ui;
     QTimer clickTimer; // Monitor Double-Clicked Event
     QButtonGroup* buttonGroup; // group of icons
+    QList<FolderIcon*> icons;
     QGridLayout* iconLayout;  // Lay out icon
 
     QString curDirect; // Current directory

@@ -116,15 +116,16 @@ QString DataBase::Logout(const char *name, const char *pwd)
 QStringList DataBase::RefreshFolder(const char *userName, const char *parent)
 {
     QStringList strList;
-    QString sql = QString("SELECT name FROM folder WHERE user = '%1' AND parent = '%2'").arg(userName).arg(parent);
+    QString sql = QString("SELECT name,ID FROM folder WHERE user = '%1' AND parent = '%2'").arg(userName).arg(parent);
 
     QSqlQuery query;
     query.exec(sql);
     qDebug() << "SQL--Refresh: "<<sql;
     while (query.next())
     {
-        QString folderName = query.value("name").toString();
-        strList.append(folderName);
+        // unit: name "//" ID
+        QString unit = query.value("name").toString() + "//" + query.value("ID").toString();
+        strList.append(unit);
     }
 
     return strList;
@@ -162,12 +163,12 @@ QString DataBase::AddFile(const char *userName, const char *parent, const char *
 
 // Folder task3: DELETE Folder
 // Delete the record
-QString DataBase::DeleteFolder(const char *userName, const char *parent, QStringList nameList)
+QString DataBase::DeleteFolder(const char *userName, const char *parent, QStringList idList)
 {
 
     QString sql;
-    for (QString folderName : nameList)
-        sql += QString("DELETE FROM folder WHERE user = \'%1\' AND parent = \'%2\' AND name = \'%3\' ;").arg(userName).arg(parent).arg(folderName);
+    for (QString id : idList)
+        sql += QString("DELETE FROM folder WHERE user = \'%1\' AND parent = \'%2\' AND ID = \'%3\' ;").arg(userName).arg(parent).arg(id);
 
     QSqlQuery query;
     qDebug() << "SQL: "<<sql;
@@ -181,10 +182,10 @@ QString DataBase::DeleteFolder(const char *userName, const char *parent, QString
 
 // Folder task4: UP Folder
 // SELECT the record
-QString DataBase::UPFolder(const char *userName, const char *folderName)
+QString DataBase::UPFolder(const char *userName, const char *ID)
 {
 
-    QString sql = QString("SELECT parent FROM folder WHERE user = \'%1\' AND  name = \'%2\'").arg(userName).arg(folderName);
+    QString sql = QString("SELECT parent FROM folder WHERE user = \'%1\' AND  ID = \'%2\'").arg(userName).arg(ID);
     qDebug() << "SQL: "<<sql;
     QSqlQuery query;
     query.exec(sql);

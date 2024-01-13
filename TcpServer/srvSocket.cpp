@@ -109,11 +109,11 @@ void srvSocket::recvMsg()
             strncpy(parent,pdu->meta+32, 32);
 
             // Process
-            QStringList nameList = DataBase::instance().RefreshFolder(userName, parent);
-            qDebug() << "Folder List:" <<nameList;
+            QStringList nameUnitList = DataBase::instance().RefreshFolder(userName, parent);
+            qDebug() << "Folder List:" <<nameUnitList;
 
             // Send response message to target client
-            QString combinedString = nameList.join('#'); // We use # to split the different string
+            QString combinedString = nameUnitList.join('#'); // We use # to split the different string
 
             PDU *respdu = mkPDU(combinedString.size()+1);
             respdu->type = REFRESH_FOLDER;
@@ -164,10 +164,10 @@ void srvSocket::recvMsg()
             strncpy(parent,pdu->meta+32,32);
             const char* charData = pdu->data;
             QString combinedString(charData);
-            QStringList nameList = combinedString.split('#');
+            QStringList idList = combinedString.split('#');
 
             // Process
-            QString msg = DataBase::instance().DeleteFolder(userName,parent,nameList);
+            QString msg = DataBase::instance().DeleteFolder(userName,parent,idList);
 
             // Send response message to target client
             PDU *respdu = mkPDU(0);
@@ -184,12 +184,12 @@ void srvSocket::recvMsg()
         {
             // Read data
             char userName[32] = {'\0'};
-            char folderName[32] = {'\0'};
+            char ID[32] = {'\0'};
             strncpy(userName,pdu->meta,32);
-            strncpy(folderName,pdu->meta+32,32);
+            strncpy(ID,pdu->meta+32,32);
 
             // Process
-            QString parent = DataBase::instance().UPFolder(userName,folderName);
+            QString parent = DataBase::instance().UPFolder(userName,ID);
             qDebug()<<"Parent: "<<parent;
 
             // Send response message to target client
