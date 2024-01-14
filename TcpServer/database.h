@@ -26,11 +26,20 @@ public:
     QString Login(const char *name, const char *pwd);  // Login
     QString Logout(const char *name, const char *pwd);  // Logout
 
+    QString SearchRootID(const char *name);
+
     QString AddFolder(const char *userName, const char *parent, const char *folderName);
     QString AddFile(const char *userName, const char *parent, const char *fileName);
-    QString DeleteFolder(const char *userName, const char *parent, QStringList nameList);
+
+    QString DeleteFolder(const char *userName, const char *parent, QStringList idList);
+    QString DeleteFile(const char *userName, const char *parent, QStringList nameList);
+
     QStringList RefreshFolder(const char *userName, const char *parent);
+    QStringList RefreshFile(const char *userName, const char *parent);
+
     QString UPFolder(const char *userName, const char *folderName);
+
+    QStringList Search(const char*userName, const char*format);
 };
 
 #endif

@@ -31,5 +31,10 @@ public:
 
     QTcpSocket cliSocket; // Tcp socket, used to connect to the server and transmit data
 };
+
+
+extern bool readFile; // To specify whether the socket need to receive the file data, which is not the format of 'PDU'
+                      // We process the received data in file.cpp or log.cpp, so it'll be modified in file.cpp
+
 #endif
 

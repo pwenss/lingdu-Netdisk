@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>599</height>
+    <width>821</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>90</x>
      <y>20</y>
-     <width>641</width>
-     <height>561</height>
+     <width>721</width>
+     <height>541</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -34,11 +34,21 @@
   <widget class="QPushButton" name="Friend_Button">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>140</y>
-     <width>61</width>
-     <height>31</height>
+     <x>0</x>
+     <y>160</y>
+     <width>81</width>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Monotype Corsiva</family>
+     <pointsize>22</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:none;</string>
    </property>
    <property name="text">
     <string>Friend</string>
@@ -48,15 +58,28 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>330</y>
-     <width>61</width>
-     <height>31</height>
+     <y>370</y>
+     <width>71</width>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Monotype Corsiva</family>
+     <pointsize>22</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Border:none;</string>
    </property>
    <property name="text">
     <string>File</string>
    </property>
   </widget>
+  <zorder>stackedWidget</zorder>
+  <zorder>File_Button</zorder>
+  <zorder>Friend_Button</zorder>
  </widget>
  <resources/>
  <connections/>

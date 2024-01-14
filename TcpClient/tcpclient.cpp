@@ -7,6 +7,8 @@
 #include "tcpclient.h"
 #include "log.h"
 
+bool readFile = false; // To specify whether the socket need to receive the file data, which is not the format of 'PDU'
+
 TcpClient::TcpClient(QWidget *parent) : QWidget(parent)
 {
     loadConfig();
@@ -43,7 +45,6 @@ void TcpClient::loadConfig()
         QStringList strList = strData.split(" ");
         IP = strList.at(0);
         port = strList.at(1).toUShort();
-        qDebug() << "IP地址为：" << IP << "端口为：" << port;
 
         file.close();
     }
@@ -56,8 +57,15 @@ void TcpClient::loadConfig()
 
 
 // Response Message Execute Function
+// The function here donnot process the data itself, it just forwards the functions of the corresponding cpp
 void TcpClient::recvMsg()
 {
+    if(readFile == true)
+    {
+        File::instance().downloadFileData();
+        return;
+    }
+
     // Read the PDU
     uint len = 0;
     cliSocket.read((char*)&len,sizeof(uint));
@@ -89,6 +97,11 @@ void TcpClient::recvMsg()
         break;
     }
     // Folder Task:
+    case ROOTID:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
     case REFRESH_FOLDER:
     {
         File::instance().recvMsg(pdu);
@@ -99,7 +112,7 @@ void TcpClient::recvMsg()
         File::instance().recvMsg(pdu);
         break;
     }
-    case DELETE_FOLDER:
+    case DELETE:
     {
         File::instance().recvMsg(pdu);
         break;
@@ -114,7 +127,16 @@ void TcpClient::recvMsg()
         File::instance().recvMsg(pdu);
         break;
     }
-
+    case DOWNLOAD:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
+    case SEARCH:
+    {
+        File::instance().recvMsg(pdu);
+        break;
+    }
 
     default:
     {

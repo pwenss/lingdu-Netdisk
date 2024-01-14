@@ -1,8 +1,17 @@
 <RCC>
     <qresource prefix="/img">
-        <file>folder.jpg</file>
-        <file>Up.jpg</file>
-        <file>DOWN.jpg</file>
-        <file>Refresh.jpg</file>
+        <file>icons/else.jpg</file>
+        <file>icons/folder.jpg</file>
+        <file>icons/photo.jpg</file>
+        <file>icons/txt.jpg</file>
+        <file>icons/DOWN.jpg</file>
+        <file>icons/Refresh.jpg</file>
+        <file>icons/Up.jpg</file>
+        <file>icons/pdf.jpg</file>
+        <file>icons/music.jpg</file>
+        <file>icons/doc.jpg</file>
+        <file>icons/docx.jpg</file>
+        <file>icons/ppt.jpg</file>
+        <file>icons/video.jpg</file>
     </qresource>
 </RCC>

@@ -140,10 +140,19 @@ release/qrc_config.cpp: ../TcpClient/config.qrc \
 
 release/qrc_img.cpp: ../TcpClient/img.qrc \
 		../../../6.6.1/mingw_64/bin/rcc.exe \
-		../TcpClient/Up.jpg \
-		../TcpClient/DOWN.jpg \
-		../TcpClient/folder.jpg \
-		../TcpClient/Refresh.jpg
+		../TcpClient/icons/video.jpg \
+		../TcpClient/icons/docx.jpg \
+		../TcpClient/icons/ppt.jpg \
+		../TcpClient/icons/photo.jpg \
+		../TcpClient/icons/pdf.jpg \
+		../TcpClient/icons/else.jpg \
+		../TcpClient/icons/doc.jpg \
+		../TcpClient/icons/Up.jpg \
+		../TcpClient/icons/music.jpg \
+		../TcpClient/icons/DOWN.jpg \
+		../TcpClient/icons/folder.jpg \
+		../TcpClient/icons/txt.jpg \
+		../TcpClient/icons/Refresh.jpg
 	D:\QT\6.6.1\mingw_64\bin\rcc.exe -name img --no-zstd ..\TcpClient\img.qrc -o release\qrc_img.cpp
 
 compiler_moc_predefs_make_all: release/moc_predefs.h
@@ -1384,7 +1393,9 @@ release/file.o: ../TcpClient/file.cpp ../TcpClient/file.h \
 		../../../6.6.1/mingw_64/include/QtWidgets/qlabel.h \
 		../../../6.6.1/mingw_64/include/QtGui/qpicture.h \
 		../../../6.6.1/mingw_64/include/QtWidgets/QFileDialog \
-		../../../6.6.1/mingw_64/include/QtWidgets/qfiledialog.h
+		../../../6.6.1/mingw_64/include/QtWidgets/qfiledialog.h \
+		../../../6.6.1/mingw_64/include/QtCore/QThread \
+		../../../6.6.1/mingw_64/include/QtGui/QPixmap
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\file.o ..\TcpClient\file.cpp
 
 release/friend.o: ../TcpClient/friend.cpp ../TcpClient/friend.h \

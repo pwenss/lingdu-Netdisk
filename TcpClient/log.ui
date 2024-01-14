@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>281</width>
-    <height>184</height>
+    <width>303</width>
+    <height>193</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,16 +39,24 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>22</x>
-     <y>42</y>
-     <width>71</width>
+     <x>30</x>
+     <y>40</y>
+     <width>81</width>
      <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>10</pointsize>
+     <family>Comic Sans MS</family>
+     <pointsize>11</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 11pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+</string>
    </property>
    <property name="text">
     <string>UserName</string>
@@ -57,7 +65,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>22</x>
+     <x>30</x>
      <y>90</y>
      <width>81</width>
      <height>16</height>
@@ -65,8 +73,16 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>10</pointsize>
+     <family>Comic Sans MS</family>
+     <pointsize>11</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 11pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+</string>
    </property>
    <property name="text">
     <string>Password</string>
@@ -80,6 +96,12 @@
      <width>71</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 11pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
    </property>
    <property name="text">
     <string>Login</string>
@@ -97,7 +119,7 @@
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	text-decoration: underline;
-	font: italic 10pt &quot;Monospac821 BT&quot;;
+	font: italic 12pt &quot;Monospac821 BT&quot;;
 	color: rgb(85, 85, 255);
     border: none;
 }</string>
@@ -116,12 +138,22 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 11pt &quot;Comic Sans MS&quot;;
+color: rgb(0, 0, 0);
+border: 2px solid black; 
+border-radius: 10px;</string>
    </property>
    <property name="text">
     <string>Log out</string>
    </property>
   </widget>
+  <zorder>UserName_lineEdit</zorder>
+  <zorder>Password_lineEdit</zorder>
+  <zorder>Login_Button</zorder>
+  <zorder>Register_Button</zorder>
+  <zorder>Logout_Button</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
  </widget>
  <resources/>
  <connections/>
