@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../TcpClient/mainwidget.h"
+#include "../../../../lingdu-Netdisk-master (2)/lingdu-Netdisk-master/TcpClient/mainwidget.h"
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 

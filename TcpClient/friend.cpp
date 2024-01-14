@@ -1,13 +1,24 @@
 #include "friend.h"
 #include "ui_friend.h"
-#include "protocol.h"
-#include "tcpclient.h"
-#include <QInputDialog>
-#include <QDebug>
+
+
+
+Friend::~Friend()
+{
+    delete ui;
+}
+
+Friend& Friend::instance()
+{
+    static Friend _friend;
+    return _friend;
+}
+#include "friend.h"
 
 // 好友功能主体窗口
 Friend::Friend(QWidget *parent) : QWidget(parent)
 {
+    ui->setupUi(this);
     m_pShowMsgTE = new QTextEdit;
     m_pFriendListWidget = new QListWidget;
     m_pInputMsgLE = new QLineEdit;
@@ -30,7 +41,7 @@ Friend::Friend(QWidget *parent) : QWidget(parent)
     QHBoxLayout *pMsgHBL = new QHBoxLayout;
     pMsgHBL->addWidget(m_pInputMsgLE);
     pMsgHBL->addWidget(m_pMsgSendPB);
-    m_pOnline = new Log;
+    m_pOnline = new online;
     QVBoxLayout *pMain = new QVBoxLayout;
     pMain->addLayout(pTopHBL);
     pMain->addLayout(pMsgHBL);
@@ -38,21 +49,6 @@ Friend::Friend(QWidget *parent) : QWidget(parent)
     m_pOnline->hide();
     setLayout(pMain);
     connect(m_pShowOnlineUsrPB,SIGNAL(clicked(bool)),this,SLOT(showOnline()));
-    connect(m_pSearchUsrPB,SIGNAL(clicked(bool)),this,SLOT(searchUsr()));
-
-}
-
-
-
-Friend::~Friend()
-{
-    delete ui;
-}
-
-Friend& Friend::instance()
-{
-    static Friend _friend;
-    return _friend;
 }
 
 // 显示在线用户窗口
@@ -61,11 +57,6 @@ void Friend::showOnline()
     if(m_pOnline->isHidden())
     {
         m_pOnline->show();
-        PDU *pdu = mkPDU(0);
-        pdu->type = ENUM_MSG_TYPE_ALL_ONLINE_REQUEST;
-        TcpClient::getInstance().getTcpSocket().write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
     }
     else
     {
@@ -73,19 +64,8 @@ void Friend::showOnline()
     }
 }
 
-// 搜索用户
-void Friend::searchUsr()
+void Friend::on_online_Button_clicked()
 {
-    m_strSearchName = QInputDialog::getText(this,"搜索","用户名");
-    if(!m_strSearchName.isEmpty())
-    {
-        qDebug() << "待查找的用户名为：" << m_strSearchName;
-        PDU *pdu = mkPDU(0);
-        memcpy(pdu->meta, m_strSearchName.toStdString().c_str(), m_strSearchName.size());
-        pdu->type = ENUM_MSG_TYPE_SEARCH_USR_REQUEST;
-        TcpClient::getInstance().getTcpSocket().write((char*)pdu,pdu->len);
-        free(pdu);
-        pdu = NULL;
-    }
+
 }
 

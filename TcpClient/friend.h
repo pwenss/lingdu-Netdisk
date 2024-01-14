@@ -10,7 +10,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "log.h"
+#include "online.h"
+
 namespace Ui {
 class Friend;
 }
@@ -31,10 +32,7 @@ private:
     QPushButton *m_pSearchUsrPB;
     QPushButton *m_pMsgSendPB;
     QPushButton *m_pPrivateChatPB;
-    Log *m_pOnline;
-public:
-    QString m_strSearchName;
-
+    online *m_pOnline;
 public:
     explicit Friend(QWidget *parent = nullptr);
     ~Friend();
@@ -42,7 +40,6 @@ public:
 
 private slots:
     void on_online_Button_clicked();
-    void searchUsr();
 
 private:
     Ui::Friend *ui;
